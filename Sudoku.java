@@ -29,6 +29,8 @@ public class Sudoku extends JFrame{
     private static int tinggi = grid * 60;
     private static Color color_blank;
     private static Color color_fill; 
+    private static  Color color_true;
+    private static  Color color_false;
 	private static Color color_number; 
 	private static Font font_number;
 	private static int NumSisa;
@@ -80,6 +82,8 @@ public class Sudoku extends JFrame{
 
     public void initComponents(){
         color_blank = new Color(255, 248, 220); 
+        color_true = Color.BLUE; // warna font ketika jawaban user benar
+	    color_false = Color.RED; // warna font ketika jawaban user salah
         color_fill = new Color(255, 228, 181); 
         color_number = new Color(139, 71, 38); 
         font_number = new Font("Arial", Font.BOLD, 20);
@@ -319,17 +323,70 @@ public class Sudoku extends JFrame{
     private class InputListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            int rowBoard = -1;
+			int colBoard = -1;
             JTextField source = (JTextField) e.getSource();
+            boolean found = false;
+			for (int row = 0; row < grid && !found; row++) {
+				for (int col = 0; col < grid && !found; col++) {
+					if (display[row][col] == source) {
+						rowBoard = row;
+						colBoard = col;
+						found = true;
+					}
+				}
+			}
             int input = -1;
             try {
                 input = Integer.parseInt(source.getText());
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Input angka");
             }   
-            //mengecek cell yang sudah terisi dan yang belum
-            LabelBoard.setText("Cells remaining: " + --NumSisa);
-        }
-    }
+            int firstRow = rowBoard / subgrid * subgrid;
+            int firstCol = colBoard / subgrid * subgrid;
+        
+			if (input == sudokupuzzle[rowBoard][colBoard]) {
+				display[rowBoard][colBoard].setForeground(color_true);
+				display[rowBoard][colBoard].setEditable(false);
+				game[rowBoard][colBoard] = false;
+				for (int row = firstRow; row < firstRow + subgrid; row++) {
+					for (int col = firstCol; col < firstCol + subgrid; col++) {
+						if (!game[row][col]) {
+							display[row][col] .setBackground(color_fill);
+						}
+					}
+                }
+                
+				//mengecek cell yang sudah terisi dan yang belum
+				LabelBoard.setText("Cells remaining: " + --NumSisa);
+			} else {
+				display[rowBoard][colBoard]
+						.setForeground(color_false);
+				// mengubah background angka pada subgrid yang sama dengan inputan
+				for (int row = firstRow; row < firstRow
+						+ subgrid; row++) {
+					for (int col = firstCol; col < firstCol
+							+ subgrid; col++) {
+						if (sudokupuzzle[row][col] == input && !game[row][col]) {
+							display[row][col]
+							.setBackground(color_false);
+						}
+					}
+				}
+			}
+			// cek apakah permainan sudah berhasil diselesaikan
+			boolean winner = true;
+			for (int row = 0; row < grid && winner; row++) {
+				for (int col = 0; col < grid && winner; col++) {
+					winner = !game[row][col];
+				}
+			}
+
+			if (winner) {
+				JOptionPane.showMessageDialog(null, "Selamat ya!");
+			}
+		}
+	}
 
 
 public static void main(String[] args) {
