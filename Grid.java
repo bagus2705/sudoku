@@ -3,8 +3,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class Grid extends JPanel {
-    public final int jumlahCell = 9;
-    public Cell []  grid = new Cell[jumlahCell];
+    private final int jumlahCell = 9;
+    private Cell []  grid = new Cell[jumlahCell];
     public Grid(){ 
         this.setLayout(new GridLayout(3,3));
         this.setBorder(new LineBorder(Color.BLUE,2));
