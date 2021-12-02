@@ -1,8 +1,8 @@
 import java.util.Random;
 public class Puzzle {
-    public static final int grid = 9;   
-    public static final int subgrid = 3; 
-    public static Random random = new Random();  
+    private static final int grid = 9;   
+    private static final int subgrid = 3; 
+    private static Random random = new Random();  
 
     private static int[][] puzzle = {
         { 5, 9, 8, 2, 7, 4, 3, 6, 1 },
@@ -37,6 +37,14 @@ public class Puzzle {
 
     public static int[][] getPuzzle() { //mereturn puzzle sudoku 
         return generateSudoku(); 
+    }
+
+    public static int getGrid() {
+        return grid;
+    }
+
+    public static int getSubgrid() {
+        return subgrid;
     }
 
 }
