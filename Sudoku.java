@@ -1,7 +1,7 @@
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.JFrame;
-public class Sudoku extends JFrame {
+
+public class Sudoku   {
 public static void main(String[] args) {
     Game Game=new Game();
     JOptionPane.showMessageDialog(null, "Sudoku");
